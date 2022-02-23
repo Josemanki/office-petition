@@ -1,0 +1,17 @@
+<div id='register-page'>
+  {{#if error}}
+    {{error}}
+  {{/if}}
+  <form action='/register' method='post' class='signature-form'>
+    <label for='first_name' class='signature-form__label text-centered'>First name</label>
+    <input type='text' name='first_name' />
+    <label for='last_name' class='signature-form__label text-centered'>Last name</label>
+    <input type='text' name='last_name' required />
+    <label for='last_name' class='signature-form__label text-centered'>Email address</label>
+    <input type='text' name='email_address' required />
+    <label for='last_name' class='signature-form__label text-centered'>Password</label>
+    <input type='text' name='password' required />
+    <button type='submit' class='signature-form__button'>Sign up</button>
+    <span>If you are already a member please <a href='#'>Submit</a></span>
+  </form>
+</div>

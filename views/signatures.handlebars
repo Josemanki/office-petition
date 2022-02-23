@@ -1,0 +1,12 @@
+<h1>Signatures go here</h1>
+<p>Big list</p>
+<ul>
+  {{#signatures}}
+    {{#if url}}
+      <li><a href={{url}}>{{first_name}} {{last_name}}</a> {{#if age}}({{age}}){{/if}}{{#if city}} - <a href='/signatures/{{city}}'>{{city}}</a>{{/if}}</li>
+    {{/if}}
+    {{#else}}
+      <li>{{first_name}} {{last_name}} {{#if age}}({{age}}){{/if}} - {{#if city}}<a href='/signatures/{{city}}'>{{city}}</a>{{/if}}</li>
+    {{/else}}
+  {{/signatures}}
+</ul>

@@ -1,0 +1,23 @@
+<div id='edit-profile-page'>
+  {{#if error}}
+    {{error}}
+  {{/if}}
+  <h1>Edit your profile here</h1>
+  <form action='/profile/edit' method='post' class='signature-form'>
+    <label for='first_name' class='signature-form__label text-centered'>First name</label>
+    <input type='text' name='first_name' value={{foundUser.first_name}} required />
+    <label for='last_name' class='signature-form__label text-centered'>Last name</label>
+    <input type='text' name='last_name' value={{foundUser.last_name}} required />
+    <label for='last_name' class='signature-form__label text-centered'>Email address</label>
+    <input type='text' name='email_address' value={{foundUser.email}} required />
+    <label for='last_name' class='signature-form__label text-centered'>Password</label>
+    <input type='text' name='password' required />
+    <label for='age' class='signature-form__label text-centered'>Age</label>
+    <input type='text' name='age' value={{foundUser.age}} />
+    <label for='city' class='signature-form__label text-centered'>City</label>
+    <input type='text' name='city' value={{foundUser.city}} />
+    <label for='homepage' class='signature-form__label text-centered'>Homepage</label>
+    <input type='text' name='homepage' value={{foundUser.url}} />
+    <button type='submit' class='signature-form__button'>Update</button>
+  </form>
+</div>

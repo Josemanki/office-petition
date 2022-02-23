@@ -1,0 +1,65 @@
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Roboto;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.container {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.text-centered {
+  text-align: center;
+}
+
+#homepage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.signature-form {
+  width: 100%;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.signature-form__signature-field {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.signature-form__names {
+  display: flex;
+  gap: 12px;
+}
+
+.signature-form__label-div {
+  display: flex;
+  flex-direction: column;
+}
+
+#canvas {
+  width: 100%;
+  margin-top: 32px;
+}
+
+.signature-form__button {
+  margin-top: 20px;
+}
+
+.thank-you__signature {
+  border: 1px solid black;
+}

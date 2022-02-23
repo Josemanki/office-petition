@@ -1,0 +1,12 @@
+<div id='login-page'>
+  {{#if error}}
+    {{error}}
+  {{/if}}
+  <form action='/login' method='post' class='signature-form'>
+    <label for='last_name' class='signature-form__label text-centered'>Email address</label>
+    <input type='text' name='email_address' required />
+    <label for='last_name' class='signature-form__label text-centered'>Password</label>
+    <input type='text' name='password' required />
+    <button type='submit' class='signature-form__button'>Log in</button>
+  </form>
+</div>
