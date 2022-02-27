@@ -20,7 +20,7 @@ CREATE TABLE users (
 -- create profiles table:
 CREATE TABLE user_profiles (
     id              SERIAL PRIMARY KEY,
-    user_id         INTEGER NOT NULL REFERENCES users(id),
+    user_id         INTEGER NOT NULL UNIQUE REFERENCES users(id),
     age             INTEGER,
     city            VARCHAR(50) NOT NULL,
     url             VARCHAR NOT NULL

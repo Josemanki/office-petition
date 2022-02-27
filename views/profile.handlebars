@@ -1,12 +1,17 @@
 <div id='profile-page'>
-  <span>Now tell us a little bit about yourself! (Totally optional)</span>
-  <form action='/profile' method='post' class='signature-form'>
-    <label for='age' class='signature-form__label text-centered'>Age</label>
-    <input type='text' name='age' />
-    <label for='city' class='signature-form__label text-centered'>City</label>
-    <input type='text' name='city' />
-    <label for='homepage' class='signature-form__label text-centered'>Homepage</label>
-    <input type='text' name='homepage' />
-    <button type='submit' class='signature-form__button'>Submit</button>
-  </form>
+  <div class='profile-page__headings'>
+    <h1 class='main-heading'>Set up your profile</h1>
+    <span class='subtitle'>Now tell us a little bit about yourself! (Totally optional)</span>
+  </div>
+  <div class='profile-page__form'>
+    <form action='/profile' method='post' class='form'>
+      <label for='age' class='form__label text-centered'>Age</label>
+      <input type='number' class='form-input' name='age' />
+      <label for='city' class='form__label text-centered'>City</label>
+      <input type='text' class='form-input' name='city' />
+      <label for='homepage' class='form__label text-centered'>Homepage (URL)</label>
+      <input type='text' class='form-input' name='homepage' />
+      <button type='submit' class='form__button'>Submit</button>
+    </form>
+  </div>
 </div>

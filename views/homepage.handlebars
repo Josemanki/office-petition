@@ -1,11 +1,26 @@
 <div id='homepage'>
-  <h1 class='main-heading text-centered'>Sign our petition to legally make Netflix offer The Office on every country permanently.</h1>
-  <p class='subtitle text-centered'>It's time to take a stand, since The Office is one of the absolute most awesome series ever created, it is borderline criminal to not offer it everywhere, anywhere, anytime. We have had enough, Netflix, and we want
-    YOU to notice.</p>
+  <h1 class='call-to-action'>It's time to take a stand!</h1>
+  <h2 class='main-heading text-centered'>Sign our petition to legally make
+    <span class='red'>Netflix</span>
+    offer The Office on every country
+    <span class='red'>permanently</span>.</h2>
+  <span class='subtitle text-centered'>
+    The Office is one of the absolute most awesome series ever created, it is borderline criminal to not offer it
+    everywhere, anywhere, anytime.
+    <br />
+    We have had enough, Netflix, and we want YOU to notice.
+  </span>
 
-  <form action='signatures' method='post' class='signature-form'>
-    <input type='hidden' name='signature' id='hidden' value='data:image/png;base64,hello' />
-    <div id='canvas'></div>
-    <button type='submit' class='signature-form__button'>Sign!</button>
-  </form>
+  {{#if loggedOut}}
+    <p class='login-required-label'>
+      You have to
+      <a href='/login'>log in</a>
+      in order to sign our petition! We promise it's going to be worth it :P</p>
+  {{else}}
+    <form action='signatures' method='post' class='form'>
+      <input type='hidden' name='signature' id='hidden' value='data:image/png;base64,hello' />
+      <div id='canvas'></div>
+      <button type='submit' class='form__button'>Sign!</button>
+    </form>
+  {{/if}}
 </div>

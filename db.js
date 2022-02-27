@@ -1,7 +1,8 @@
 const spicedPg = require('spiced-pg');
 const bcrypt = require('bcrypt');
+const { DB_USER, DB_PASSWORD } = require('./secrets.json');
 
-const db = spicedPg('postgres:postgres:postgres@localhost:5432/petition');
+const db = spicedPg(`postgres:${DB_USER}:${DB_PASSWORD}@localhost:5432/petition`);
 
 const getSignatures = () => {
   return db
@@ -46,8 +47,12 @@ const createSignature = ({ user_id, signature }) => {
   return db.query(`INSERT INTO signatures (user_id, signature) VALUES($1, $2) RETURNING *`, [user_id, signature]).then(({ rows }) => rows[0]);
 };
 
+const deleteSignature = (user_id) => {
+  return db.query(`DELETE FROM signatures WHERE user_id = $1`, [user_id]);
+};
+
 const getUserSignature = (id) => {
-  return db.query(`SELECT * FROM signatures where id = $1`, [id]).then(({ rows }) => rows[0].signature);
+  return db.query(`SELECT * FROM signatures where user_id = $1`, [id]).then(({ rows }) => rows[0]);
 };
 
 const createUser = ({ first_name, last_name, email_address, password }) => {
@@ -57,7 +62,7 @@ const createUser = ({ first_name, last_name, email_address, password }) => {
 };
 
 const createUserProfile = ({ user_id, age, city, homepage }) => {
-  return db.query('INSERT INTO user_profiles (user_id, age, city, url) VALUES ($1, $2, $3, $4) RETURNING *', [user_id, age, city, homepage]).then(({ rows }) => {
+  return db.query('INSERT INTO user_profiles (user_id, age, city, url) VALUES ($1, $2, $3, $4) RETURNING *', [user_id, +age, city, homepage]).then(({ rows }) => {
     return rows[0];
   });
 };
@@ -82,7 +87,29 @@ const getUserDataById = (id) => {
     .then(({ rows }) => rows[0]);
 };
 
-const editProfile = ({}) => {};
+const editProfile = ({ user_id, age, city, homepage }) => {
+  return db
+    .query(
+      `
+  INSERT INTO user_profiles (user_id, age, city, url)
+  VALUES ($1, $2, $3, $4)
+  ON CONFLICT (user_id)
+  DO UPDATE SET age = $2, city = $3, url = $4
+  RETURNING *;
+`,
+      [user_id, age, city, homepage]
+    )
+    .then(({ rows }) => rows[0]);
+};
+
+const editUser = ({ first_name, last_name, email_address, password, user_id }) => {
+  if (password) {
+    return getHash(password).then((password_hash) => {
+      return db.query('UPDATE users SET (first_name, last_name, email, password_hash) = ($1, $2, $3, $4) WHERE id = $5 RETURNING *', [first_name, last_name, email_address, password_hash, user_id]).then(({ rows }) => rows[0]);
+    });
+  }
+  return db.query('UPDATE users SET (first_name, last_name, email) = ($1, $2, $3) WHERE id = $4 RETURNING *', [first_name, last_name, email_address, user_id]).then(({ rows }) => rows[0]);
+};
 
 const login = ({ email_address, password }) => {
   return getUserByEmail(email_address).then((foundUser) => {
@@ -107,4 +134,7 @@ module.exports = {
   createUserProfile,
   getSignaturesByCity,
   getUserDataById,
+  editUser,
+  editProfile,
+  deleteSignature,
 };

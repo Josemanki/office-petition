@@ -1,5 +1,14 @@
-<h1>Thank you!</h1>
-<p>Thanks for signing</p>
-<p>Your signature looks like:</p>
-<img src={{signature}} alt='Your signature' class='thank-you__signature' />
-<a href='/signatures'>See all signatures</a>
+<div id='thank-you-page'>
+  <h1 class='heading'>Thank you!</h1>
+  <p class='subtitle'>Thanks for signing our petition to bring The Office everywhere, anywhere, anytime. You are one of
+    the many people that will want to drive change and we are infitely grateful!</p>
+  <p class='subtitle'>Your signature looks like:</p>
+  <img src={{signature}} alt='Your signature' class='thank-you__signature' />
+  <a href='/signatures' class='thank-you__action'>See all signatures</a>
+  <a href='/profile/edit' class='thank-you__action'>Edit your profile</a>
+  <form action='/signatures/delete' method='post' id='delete-form'>
+    <button type='submit' class='thank-you__delete-signature'>Delete your signature</button>
+  </form>
+
+  <script src='/confirmDelete.js'></script>
+</div>

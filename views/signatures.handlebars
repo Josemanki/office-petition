@@ -1,12 +1,26 @@
-<h1>Signatures go here</h1>
-<p>Big list</p>
-<ul>
-  {{#signatures}}
-    {{#if url}}
-      <li><a href={{url}}>{{first_name}} {{last_name}}</a> {{#if age}}({{age}}){{/if}}{{#if city}} - <a href='/signatures/{{city}}'>{{city}}</a>{{/if}}</li>
-    {{/if}}
-    {{#else}}
-      <li>{{first_name}} {{last_name}} {{#if age}}({{age}}){{/if}} - {{#if city}}<a href='/signatures/{{city}}'>{{city}}</a>{{/if}}</li>
-    {{/else}}
-  {{/signatures}}
-</ul>
+<div id='signatures-page'>
+  <div class='signatures-page__content'>
+    <h1 class='main-heading'>Signatures</h1>
+    <span class='subtitle'>This is the list of awesome people who have signed our petition, helping us to bring The
+      Office to every house with Netflix access!</span>
+    <ul class='signature-list'>
+      {{#signatures}}
+        {{#if url}}
+          <li class='signature-list__signature'>
+            <a href={{url}}>{{first_name}} {{last_name}}</a>
+            {{#if age}}({{age}}){{/if}}
+            {{#if city}} - <a href='/signatures/{{city}}'>{{city}}</a>{{/if}}
+          </li>
+        {{else}}
+          <li class='signature-list__signature'>
+            {{first_name}}
+            {{last_name}}
+            {{#if age}}({{age}}){{/if}}
+            {{#if city}} - <a href='/signatures/{{city}}'>{{city}}</a>{{/if}}
+          </li>
+        {{/if}}
+      {{/signatures}}
+    </ul>
+  </div>
+  <div class='back-to-homepage'><a href='/'>Go back to homepage</a></div>
+</div>

@@ -10,7 +10,7 @@ if (canvasDiv) {
 
   // resize canvas
   const resize = () => {
-    ctx.canvas.width = canvasDiv.clientWidth;
+    ctx.canvas.width = canvasDiv.clientWidth - 2;
     ctx.canvas.height = 150;
   };
 
@@ -22,7 +22,7 @@ if (canvasDiv) {
 
     ctx.lineWidth = 2;
     ctx.lineCap = 'round';
-    ctx.strokeStyle = '#000';
+    ctx.strokeStyle = '#fff';
 
     ctx.moveTo(pos.x, pos.y); // from
     setPosition(e);
@@ -38,7 +38,8 @@ if (canvasDiv) {
   const canvas = document.createElement('canvas');
   canvasDiv.appendChild(canvas);
   document.body.style.margin = 0;
-  canvas.style.border = '1px solid black';
+  canvas.style.border = '1px solid white';
+  canvas.style.boxSizing = 'border-box';
 
   // last known position
   let pos = { x: 0, y: 0 };

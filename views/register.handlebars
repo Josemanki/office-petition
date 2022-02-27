@@ -1,17 +1,24 @@
 <div id='register-page'>
-  {{#if error}}
-    {{error}}
-  {{/if}}
-  <form action='/register' method='post' class='signature-form'>
-    <label for='first_name' class='signature-form__label text-centered'>First name</label>
-    <input type='text' name='first_name' />
-    <label for='last_name' class='signature-form__label text-centered'>Last name</label>
-    <input type='text' name='last_name' required />
-    <label for='last_name' class='signature-form__label text-centered'>Email address</label>
-    <input type='text' name='email_address' required />
-    <label for='last_name' class='signature-form__label text-centered'>Password</label>
-    <input type='text' name='password' required />
-    <button type='submit' class='signature-form__button'>Sign up</button>
-    <span>If you are already a member please <a href='#'>Submit</a></span>
-  </form>
+  <div class='register-page__headings'>
+    <h1 class='main-heading'>Sign up</h1>
+    <span class='subtitle'>You'll need an account before you can sign the petition, so this is a step in the right
+      direction!</span>
+  </div>
+  <div class='register-page__form'>
+    {{#if error}}
+      <span class='error-message'>{{error}}</span>
+    {{/if}}
+    <form action='/register' method='post' class='form'>
+      <label for='first_name' class='form__label text-centered'>First name</label>
+      <input type='text' class='form-input' name='first_name' />
+      <label for='last_name' class='form__label text-centered'>Last name</label>
+      <input type='text' class='form-input' name='last_name' required />
+      <label for='last_name' class='form__label text-centered'>Email address</label>
+      <input type='text' class='form-input' name='email_address' required />
+      <label for='last_name' class='form__label text-centered'>Password</label>
+      <input type='password' class='form-input' name='password' required />
+      <button type='submit' class='form__button'>Sign up</button>
+      <span class='login-signup-cta'>If you are already a member please <a href='#'>log in</a>.</span>
+    </form>
+  </div>
 </div>
