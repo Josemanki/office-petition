@@ -2,7 +2,8 @@ const spicedPg = require('spiced-pg');
 const bcrypt = require('bcrypt');
 const { DB_USER, DB_PASSWORD } = require('./secrets.json');
 
-const db = spicedPg(`postgres:${DB_USER}:${DB_PASSWORD}@localhost:5432/petition`);
+const dbUrl = process.env.DATABASE_URL || `postgres:${DB_USER}:${DB_PASSWORD}@localhost:5432/petition`;
+const db = spicedPg(dbUrl);
 
 const getSignatures = () => {
   return db
@@ -44,7 +45,9 @@ const getHash = (password) => {
 };
 
 const createSignature = ({ user_id, signature }) => {
-  return db.query(`INSERT INTO signatures (user_id, signature) VALUES($1, $2) RETURNING *`, [user_id, signature]).then(({ rows }) => rows[0]);
+  return db
+    .query(`INSERT INTO signatures (user_id, signature) VALUES($1, $2) RETURNING *`, [user_id, signature])
+    .then(({ rows }) => rows[0]);
 };
 
 const deleteSignature = (user_id) => {
@@ -57,14 +60,28 @@ const getUserSignature = (id) => {
 
 const createUser = ({ first_name, last_name, email_address, password }) => {
   return getHash(password).then((password_hash) => {
-    return db.query('INSERT INTO users (first_name, last_name, email, password_hash) VALUES ($1, $2, $3, $4) RETURNING *', [first_name, last_name, email_address, password_hash]).then(({ rows }) => rows[0]);
+    return db
+      .query('INSERT INTO users (first_name, last_name, email, password_hash) VALUES ($1, $2, $3, $4) RETURNING *', [
+        first_name,
+        last_name,
+        email_address,
+        password_hash,
+      ])
+      .then(({ rows }) => rows[0]);
   });
 };
 
 const createUserProfile = ({ user_id, age, city, homepage }) => {
-  return db.query('INSERT INTO user_profiles (user_id, age, city, url) VALUES ($1, $2, $3, $4) RETURNING *', [user_id, +age, city, homepage]).then(({ rows }) => {
-    return rows[0];
-  });
+  return db
+    .query('INSERT INTO user_profiles (user_id, age, city, url) VALUES ($1, $2, $3, $4) RETURNING *', [
+      user_id,
+      +age,
+      city,
+      homepage,
+    ])
+    .then(({ rows }) => {
+      return rows[0];
+    });
 };
 
 // [user_id, age, city, homepage]
@@ -105,10 +122,22 @@ const editProfile = ({ user_id, age, city, homepage }) => {
 const editUser = ({ first_name, last_name, email_address, password, user_id }) => {
   if (password) {
     return getHash(password).then((password_hash) => {
-      return db.query('UPDATE users SET (first_name, last_name, email, password_hash) = ($1, $2, $3, $4) WHERE id = $5 RETURNING *', [first_name, last_name, email_address, password_hash, user_id]).then(({ rows }) => rows[0]);
+      return db
+        .query(
+          'UPDATE users SET (first_name, last_name, email, password_hash) = ($1, $2, $3, $4) WHERE id = $5 RETURNING *',
+          [first_name, last_name, email_address, password_hash, user_id]
+        )
+        .then(({ rows }) => rows[0]);
     });
   }
-  return db.query('UPDATE users SET (first_name, last_name, email) = ($1, $2, $3) WHERE id = $4 RETURNING *', [first_name, last_name, email_address, user_id]).then(({ rows }) => rows[0]);
+  return db
+    .query('UPDATE users SET (first_name, last_name, email) = ($1, $2, $3) WHERE id = $4 RETURNING *', [
+      first_name,
+      last_name,
+      email_address,
+      user_id,
+    ])
+    .then(({ rows }) => rows[0]);
 };
 
 const login = ({ email_address, password }) => {

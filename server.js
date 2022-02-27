@@ -45,7 +45,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.listen(PORT, () => {
+app.listen(process.env.PORT || PORT, () => {
   console.log(`Listening on port ${PORT}`);
 });
 
@@ -102,7 +102,6 @@ app.get('/thank-you', requireLogin, (req, res) => {
 
 app.get('/signatures', (req, res) => {
   getSignatures().then((signatures) => {
-    console.log(signatures);
     res.render('signatures', {
       signatures,
     });
@@ -110,7 +109,6 @@ app.get('/signatures', (req, res) => {
 });
 
 app.post('/signatures', (req, res) => {
-  console.log('Posted to signatures');
   createSignature({ user_id: req.session.user_id, ...req.body }).then(() => {
     res.redirect('/thank-you');
   });
@@ -125,7 +123,6 @@ app.get('/signatures/:city', (req, res) => {
 });
 
 app.post('/signatures/delete', (req, res) => {
-  console.log('Posted to signatures/delete');
   deleteSignature(req.session.user_id).then(() => {
     res.redirect('/');
   });
@@ -136,7 +133,6 @@ app.get('/register', requireLoggedOut, (req, res) => {
 });
 
 app.post('/register', (req, res) => {
-  console.log('Posted to register');
   const { first_name, last_name, email_address, password } = req.body;
   if (!first_name || !last_name || !email_address || !password) {
     res.render('register', {
@@ -153,7 +149,6 @@ app.post('/register', (req, res) => {
       res.redirect('/profile');
     })
     .catch((error) => {
-      console.log(error);
       if (error.constraint === 'users_email_key') {
         res.render('register', {
           error: "This email already exists in our database, we'll need a new one!",
@@ -171,7 +166,6 @@ app.get('/login', requireLoggedOut, (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-  console.log('Posted to login');
   const { email_address, password } = req.body;
   if (!email_address || !password) {
     res.render('register', {
@@ -182,12 +176,10 @@ app.post('/login', (req, res) => {
 
   login(req.body).then((foundUser) => {
     if (!foundUser) {
-      console.log('Credentials are wrong!');
       res.render('login', {
         error: 'Some data doesnt seem alright, please check it out!',
       });
     } else {
-      console.log(`Welcome back ${foundUser.first_name}!`);
       req.session.user_id = foundUser.id;
       res.redirect('/');
     }
@@ -204,11 +196,6 @@ app.post('/profile', (req, res) => {
     res.redirect('/');
     return;
   }
-  console.log('posted');
-  let profileFields = {};
-  Object.keys(req.body).forEach((item) => {
-    console.log(item);
-  });
   createUserProfile({ user_id: req.session.user_id, ...req.body })
     .then(() => {
       res.redirect('/');
@@ -227,7 +214,6 @@ app.get('/profile/edit', requireLogin, (req, res) => {
 });
 
 app.post('/profile/edit', (req, res) => {
-  console.log({ ...req.session, ...req.body });
   Promise.all([editProfile({ ...req.session, ...req.body }), editUser({ ...req.session, ...req.body })])
     .then((data) => {
       res.render('edit-profile', {
@@ -236,7 +222,6 @@ app.post('/profile/edit', (req, res) => {
       });
     })
     .catch((error) => {
-      console.log(error);
       res.render('edit-profile', {
         message: 'Something went wrong while updating your profile',
         foundUser: { ...data[0], ...data[1] },
