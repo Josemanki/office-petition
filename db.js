@@ -3,7 +3,17 @@ const bcrypt = require('bcrypt');
 const { DB_USER, DB_PASSWORD } = require('./secrets.json');
 
 const dbUrl = process.env.DATABASE_URL || `postgres:${DB_USER}:${DB_PASSWORD}@localhost:5432/petition`;
-const db = spicedPg(dbUrl);
+let db;
+if (process.env.DATABASE_URL) {
+  // the program is running on heroku
+  db = spicedPg(process.env.DATABASE_URL);
+} else {
+  // we are running locally
+  const { DB_USER, DB_PASSWORD } = require('./secrets.json');
+  const DATABASE_NAME = 'petition';
+  console.log(`[db] Connecting to: ${DATABASE_NAME}`);
+  db = spicedPg(`postgres:${DB_USER}:${DB_PASSWORD}@localhost:5432/${DATABASE_NAME}`);
+}
 
 const getSignatures = () => {
   return db

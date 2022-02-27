@@ -2,7 +2,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { engine } = require('express-handlebars');
 const cookieSession = require('cookie-session');
-const { SESSION_SECRET } = require('./secrets.json');
 const {
   getSignatures,
   editProfile,
@@ -31,9 +30,26 @@ app.use(
   })
 );
 
+if (process.env.NODE_ENV == 'production') {
+  app.use((req, res, next) => {
+    if (req.headers['x-forwarded-proto'].startsWith('https')) {
+      return next();
+    }
+    res.redirect(`https://${req.hostname}${req.url}`);
+  });
+}
+
+let sessionSecret;
+
+if (process.env.NODE_ENV == 'production') {
+  sessionSecret = process.env.SESSION_SECRET;
+} else {
+  sessionSecret = require('./secrets').SESSION_SECRET;
+}
+
 app.use(
   cookieSession({
-    secret: SESSION_SECRET,
+    secret: sessionSecret,
     maxAge: 1000 * 60 * 60 * 24 * 14,
   })
 );
